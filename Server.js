@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const cors = require('cors');
 
 const app = express();
@@ -22,9 +22,9 @@ const User = mongoose.model('User', UserSchema);
 app.post('/api/signup', async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    console.log(req.body.username);
+    console.log("Usename is"+req.body.username);
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword });
+    const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
     res.status(201).json({ message: 'User signed up successfully.' });
   } catch (error) {
